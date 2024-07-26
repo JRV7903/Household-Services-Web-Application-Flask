@@ -69,18 +69,4 @@ class Service(db.Model):
 
 
 
-with app.app_context():
-    db.create_all()
-    first_admin = User.query.filter_by(role='admin').first()
-    if not first_admin:
-        admin = User(
-            name="admin",
-            email="admin@example.com",
-            password="admin",  
-            role="admin",
-            address="",      
-            pincode="",       
-            mobile=""     
-        )
-        db.session.add(admin)
-        db.session.commit()
+
