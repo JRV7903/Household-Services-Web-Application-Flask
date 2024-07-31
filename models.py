@@ -80,7 +80,6 @@ with app.app_context():
             pincode="",       
             mobile=""     
         )
-        db.session.add(admin)
-        db.session.commit()
+        
 
 
