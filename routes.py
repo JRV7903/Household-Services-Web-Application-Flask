@@ -8,7 +8,7 @@ import os
 import seaborn as sns
 from datetime import datetime
 import matplotlib.pyplot as plt
-
+import io
 import base64
 from sqlalchemy import func
 
