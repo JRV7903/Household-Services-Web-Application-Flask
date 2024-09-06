@@ -1,0 +1,1 @@
+This particular repository is being created to contain other random projects such as websites and what not. Go through it and have fun.
