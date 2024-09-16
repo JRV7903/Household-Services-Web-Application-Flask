@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .option-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100px;
+            margin: 1%;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .option-box:hover {
+            transform: scale(1.05);
+        }
+
+        .service-history-table, .best-services-table {
+            margin-top: 20px;
+        }
+
+        .flash-message {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1050;
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'customer_navbar.html' %}
+
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-message">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <h1>Welcome {{ username }}!</h1>
+
+        <div class="mt-4">
+            <h3>How can we help you today?</h3>
+            <div class="row">
+                {% for category in ['Cleaning', 'Plumbing', 'Carpentry', 'Electrician', 'Laundry'] %}
+                <div class="col-md-2">
+                    <a href="{{ url_for('get_services', category=category) }}">
+                        <div class="option-box">
+                            <h5>{{ category }}</h5>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+                <div class="col-md-2">
+                    <a href="{{ url_for('service_request') }}">
+                        <div class="option-box">
+                            <h5>Request a New Service</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if not category %}
+        <h4 class="mt-4">Available Services</h4>
+        <p class="text-center text-muted">Please select a service category to view available services.</p>
+        {% elif services %}
+        <h4 class="mt-4">Available {{ category }} Services</h4>
+        <table class="table table-bordered best-services-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Service</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in services %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ service.name }}</td>
+                    <td>₹ {{ service.price }}</td>
+                    <td>{{ service.description }}</td>
+                    <td>
+                        {% if service.customer_id %}
+                        <button class="btn btn-secondary" disabled>Booked</button>
+                        {% else %}
+                        <form method="post" action="{{ url_for('book_service') }}">
+                            <input type="hidden" name="service_id" value="{{ service.id }}">
+                            <button class="btn btn-primary" type="submit">Book</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h4 class="mt-4">Available {{ category }} Services</h4>
+        <p class="text-center text-muted">Sorry, no services are available in this category at the moment.</p>
+        {% endif %}
+
+        <h3 class="mt-4">Service History</h3>
+        <table class="table table-bordered service-history-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Service Name</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in service_history %}
+                <tr>
+                    <td>{{ service.id }}</td>
+                    <td>{{ service.name }}</td>
+                    <td>{{ service.description }}</td>
+                    <td>{{ service.date_created }}</td>
+                    <td>{{ service.status }}</td>
+                    <td>
+                        <a href="{{ url_for('service_history', service_id=service.id) }}" class="btn btn-info">View</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">No service history available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        setTimeout(() => {
+            $('.flash-message').fadeOut('slow');
+        }, 3000);
+    </script>
+</body>
+</html>
