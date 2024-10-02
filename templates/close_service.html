@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'customer_navbar.html' %}
+
+    <div class="container mt-4">
+        <h2 class="text-center">Close Service</h2>
+
+        <p class="text-center">Are you sure you want to close this service?</p>
+
+        <table class="table table-bordered mx-auto" style="max-width: 600px;">
+            <tr>
+                <th>Service Name</th>
+                <td>{{ service.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ service.description }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>₹{{ service.price }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ service.status }}</td>
+            </tr>
+            <tr>
+                <th>Professional</th>
+                <td>{{ service.professional.user.name if service.professional else 'N/A' }}</td>
+            </tr>
+        </table>
+
+        <form method="POST" class="mx-auto" style="max-width: 600px;">
+            <div class="form-group">
+                <label for="rating">Rating:</label>
+                <select id="rating" name="rating" class="form-control" required>
+                    <option value="">Select Rating</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="remarks">Review:</label>
+                <textarea id="remarks" name="remarks" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Confirm Close</button>
+        </form>
+    </div>
+{% endblock %}
