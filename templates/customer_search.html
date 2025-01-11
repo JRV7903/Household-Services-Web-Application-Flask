@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Search{% endblock %}
+
+{% block content %}
+    {% include 'customer_navbar.html' %}
+
+    <div class="container my-4">
+        <h1>Search Services</h1>
+        <form action="/customer_search" method="GET" class="row">
+            <div class="col-md-4">
+                <label for="service_type" class="form-label">Service Type</label>
+                <select name="service_type" id="service_type" class="form-select">
+                    <option value="">Select Service Type</option>
+                    <option value="Cleaning" {% if selected_type == "Cleaning" %}selected{% endif %}>Cleaning</option>
+                    <option value="Plumbing" {% if selected_type == "Plumbing" %}selected{% endif %}>Plumbing</option>
+                    <option value="Electrician" {% if selected_type == "Electrician" %}selected{% endif %}>Electrician</option>
+                    <option value="Carpentry" {% if selected_type == "Carpentry" %}selected{% endif %}>Carpentry</option>
+                    <option value="Laundry" {% if selected_type == "Laundry" %}selected{% endif %}>Laundry</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="status" class="form-label">Service Status</label>
+                <select name="status" id="status" class="form-select">
+                    <option value="">Select Status</option>
+                    <option value="current" {% if selected_status == "current" %}selected{% endif %}>Available</option>
+                    <option value="past" {% if selected_status == "past" %}selected{% endif %}>Past</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary w-100" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container my-4">
+        {% if services %}
+            <h4>Search Results</h4>
+            <ul class="list-group">
+                {% for service in services %}
+                    <li class="list-group-item">
+                        <strong>{{ service.name }}</strong> {{ service.type }} - {{ service.status }}
+                        <br>
+                        <small>{{ service.description }}</small>
+                        {% if service.status == "created" %}
+                            <a href="{{ url_for('book_service', service_id=service.id) }}" class="btn btn-sm btn-success mt-2">Book</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No services found matching your criteria.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+

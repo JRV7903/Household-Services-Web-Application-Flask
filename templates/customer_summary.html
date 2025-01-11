@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Summary{% endblock %}
+
+{% block content %}
+    {% include 'customer_navbar.html' %}
+
+    <div class="container mt-4">
+        <h1>Customer Summary</h1>
+
+        <h2>Services Overview</h2>
+        <div class="row mb-4"> 
+            <div class="col-md-4 mb-3">
+                <h4>Requested Services: {{ requested_count }}</h4>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>In-Progress Services: {{ inprogress_count }}</h4>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>Completed Services: {{ completed_count }}</h4>
+            </div>
+        </div>
+
+        <div class="plot-container mb-4">
+            {% if services_status_plot %}
+                <div>
+                    <h3>Services Status Overview:</h3>
+                    <img src="data:image/png;base64,{{ services_status_plot }}" alt="Services Status Overview">
+                </div>
+            {% else %}
+                <p>No data available for services status plot.</p>
+            {% endif %}
+        </div>
+
+        <br>
+    </div>
+{% endblock %}
+

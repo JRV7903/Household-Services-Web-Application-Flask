@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    {% include 'admin_navbar.html' %}
+
+    <div class="container my-4">
+        <form action="/admin_search" method="POST" class="d-flex">
+            <label for="search_input" class="mr-2">Search By:</label>
+
+            <select name="search_input" id="search_input" class="form-select me-2">
+                <option value="">Select Service Type</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Laundry">Laundry</option>
+                <option value="Electrician">Electrician</option>
+                <option value="Carpentry">Carpentry</option>
+            </select>
+
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+    </div>
+
+    {% if services %}
+        <div class="container my-4">
+            <h4>Search Results for "{{ search_input }}"</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in services %}
+                        <tr>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.description }}</td>
+                            <td>{{ service.status }}</td>
+                            <td>
+                                <a href="{{ url_for('admin_service_view', service_id=service.id) }}" class="btn btn-info">View</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Service Details{% endblock %}
+
+{% block content %}
+    {% include 'admin_navbar.html' %}
+
+    <div class="container-fluid">
+        <h2>Service Details</h2>
+
+        <table class="table">
+            <tr>
+                <th>Service Name</th>
+                <td>{{ service.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ service.description }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>₹{{ service.price }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>
+                    {% if service.status == 'inprogress' %}
+                        In Progress
+                    {% elif service.status == 'pending' %}
+                        Waiting for Approval
+                    {% elif service.status == 'requested' %}
+                        Allocating a Professional
+                    {% else %}
+                        {{ service.status }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Customer Name</th>
+                <td>{{ service.customer.user.name if service.customer else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Customer Contact</th>
+                <td>{{ service.customer.user.mobile if service.customer else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Customer Address</th>
+                <td>{{ service.customer.user.address if service.customer else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Professional</th>
+                <td>{{ service.professional.user.name if service.professional else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Professional Contact</th>
+                <td>{{ service.professional.user.mobile if service.professional else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Professional Service Domain</th>
+                <td>{{ service.professional.service_domain if service.professional else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Remarks</th>
+                <td>{{ service.remarks if service.remarks else 'No remarks yet' }}</td>
+            </tr>
+            <tr>
+                <th>Rating</th>
+                <td>{{ service.rating if service.rating else 'Not Rated' }}</td>
+            </tr>
+            <tr>
+                <th>Date Created</th>
+                <td>{{ service.date_created }}</td>
+            </tr>
+        </table>
+
+        {% if service.status in ['requested', 'pending', 'inprogress'] %}
+            <form action="{{ url_for('admin_service_view', service_id=service.id) }}" method="POST">
+                <button type="submit" class="btn btn-danger">Close Service</button>
+            </form>
+        {% endif %}
+        
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-4">Back to Dashboard</a>
+    </div>
+
+{% endblock %}

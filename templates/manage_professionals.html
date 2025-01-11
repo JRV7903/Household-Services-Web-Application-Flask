@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Professionals{% endblock %}
+
+{% block content %}
+    {% include 'admin_navbar.html' %}
+
+    <div class="container my-5">
+        <h4>Manage Professionals</h4>
+
+        <h5>Pending Professionals:</h5>
+        {% if pending_professionals %}
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Experience</th>
+                    <th>Service</th>
+                    <th>Document</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for professional in pending_professionals %}
+                <tr>
+                    <td>{{ professional.id }}</td>
+                    <td>{{ professional.user.name }}</td>
+                    <td>{{ professional.experience }}</td>
+                    <td>{{ professional.service_domain }}</td>
+                    <td>
+                        <a href="{{ url_for('static', filename='uploads/' + professional.documents) }}" target="_blank">View Document</a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('approve_professional', professional_id=professional.id, action='accept') }}" class="btn btn-success btn-sm">Approve</a>
+                        <a href="{{ url_for('approve_professional', professional_id=professional.id, action='reject') }}" class="btn btn-danger btn-sm">Reject</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No pending professionals available.</p>
+        {% endif %}
+
+        <h5>Approved Professionals:</h5>
+        {% if approved_professionals %}
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Experience</th>
+                    <th>Service</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for professional in approved_professionals %}
+                <tr>
+                    <td>{{ professional.id }}</td>
+                    <td>{{ professional.user.name }}</td>
+                    <td>{{ professional.experience }}</td>
+                    <td>{{ professional.service_domain }}</td>
+                    <td>
+                        <a href="{{ url_for('delete_professional', professional_id=professional.id) }}" class="btn btn-danger btn-sm">Block</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No approved professionals available.</p>
+        {% endif %}
+    </div>
+{% endblock %}

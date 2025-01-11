@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Customers{% endblock %}
+
+{% block content %}
+    {% include 'admin_navbar.html' %}
+
+    <div class="container my-5">
+        <h4>Manage Customers</h4>
+        
+        {% if customers %}
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.user.name }}</td>
+                    <td>{{ customer.user.email }}</td>
+                    <td>{{ customer.user.mobile }}</td>
+                    <td>
+                        <a href="{{ url_for('delete_customer', customer_id=customer.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No customers available.</p>
+        {% endif %}
+    </div>
+{% endblock %}

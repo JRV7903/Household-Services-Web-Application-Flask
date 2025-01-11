@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .dashboard-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 150px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(19, 17, 17);
+            background-color: #98bee7;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .dashboard-option:hover {
+            background-color: #6fa3d9;
+            transform: scale(1.05);
+            color: #fff;
+        }
+        .welcome-text {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .flash-message {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    {% include 'admin_navbar.html' %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-success flash-message" role="alert">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container text-center">
+        <div class="welcome-text">Welcome, Admin</div>
+    </div>
+
+    <div class="container text-center">
+        <div class="dashboard-grid">
+            <a href="{{ url_for('manage_services') }}" class="dashboard-option">Manage Services</a>
+            <a href="{{ url_for('manage_requests') }}" class="dashboard-option">Manage Requests</a>
+            <a href="{{ url_for('manage_professionals') }}" class="dashboard-option">Manage Professionals</a>
+            <a href="{{ url_for('manage_customers') }}" class="dashboard-option">Manage Customers</a>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        window.onload = function() {
+            var flashMessage = document.querySelector('.flash-message');
+            if (flashMessage) {
+                setTimeout(function() {
+                    flashMessage.style.opacity = 0;
+                    setTimeout(function() {
+                        flashMessage.remove();
+                    }, 500);
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

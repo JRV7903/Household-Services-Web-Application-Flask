@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Professional Summary{% endblock %}
+
+{% block content %}
+    {% include 'professional_navbar.html' %}
+
+    <div class="container mt-4">
+        <h1>Welcome, {{ professional.user.name }}</h1>
+
+        <h2>Summary</h2>
+        <p><strong>Service Completion Rate:</strong> {{ completion_rate }}%</p>
+        <p><strong>Total Accepted Services:</strong> {{ total_services_accepted }}</p>
+    </div>
+
+    <div class="container mt-4">
+        <h2>Service Status</h2>
+        <img src="data:image/png;base64,{{ services_plot }}" alt="Service Status Pie Chart" class="img-fluid">
+    </div>
+{% endblock %}

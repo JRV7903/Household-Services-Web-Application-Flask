@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'admin_navbar.html' %}
+
+    <div class="container mt-4">
+        <h1>Admin Summary</h1>
+
+        <h2>Overall Customer Ratings: 
+            {% if avg_rating %}
+                <span style="font-size: 2rem; margin-left: 20px;">{{ avg_rating }}</span>
+            {% else %}
+                <span>No ratings available.</span>
+            {% endif %}
+        </h2>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                {% if ratings_plot %}
+                    <h3>Customer Ratings by Service:</h3>
+                    <img src="data:image/png;base64,{{ ratings_plot }}" alt="Customer Ratings by Service" class="img-fluid">
+                {% else %}
+                    <p>No customer ratings available for plotting.</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6">
+                {% if services_plot %}
+                    <h3>Services Requested by Type:</h3>
+                    <img src="data:image/png;base64,{{ services_plot }}" alt="Services Requested by Type" class="img-fluid">
+                {% else %}
+                    <p>No service request data available for plotting.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <br>
+    </div>
+{% endblock %}
