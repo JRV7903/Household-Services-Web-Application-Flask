@@ -1,1 +1,1 @@
-This particular repository is being created to contain other random projects such as websites and what not. Go through it and have fun.
+The Household Services Web Application is a multi-user web platform designed to connect customers with service professionals for household needs. Built using Flask, Jinja2, Bootstrap, and SQLite, the application provides distinct features for Admins, Service Professionals, and Customers, ensuring smooth service management, user interaction, and role-based functionalities.
