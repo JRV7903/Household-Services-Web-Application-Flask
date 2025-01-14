@@ -514,7 +514,6 @@ def manage_services():
     services = Service.query.order_by(Service.id.desc()).all()
     
     if request.method == 'POST':
-        # Here, we handle the "Close" button click
         service_id = request.form.get('service_id')
         service = Service.query.get(service_id)
         
